@@ -1,5 +1,4 @@
 import { ThemeProvider } from '@/components/theme-provider';
-import { ThemeToggle } from '@/components/theme-toggle';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
@@ -39,7 +38,6 @@ export default function RootLayout({
                     enableSystem
                     disableTransitionOnChange
                 >
-                    <ThemeToggle />
                     {children}
                 </ThemeProvider>
             </body>
