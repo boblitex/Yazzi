@@ -1,2 +1,2 @@
 # Yazzi
-yazzi.dev
+an AI powered web application (WIP)
