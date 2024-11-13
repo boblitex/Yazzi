@@ -44,7 +44,6 @@ const data = {
                 {
                     title: 'Data Fetching',
                     url: '#',
-                    isActive: true,
                 },
                 {
                     title: 'Rendering',
