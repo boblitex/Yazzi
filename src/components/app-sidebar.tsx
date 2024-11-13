@@ -101,7 +101,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                             size="lg"
                             asChild
                         >
-                            <div className="">
+                            <div className="flex justify-between items-center">
                                 <Image
                                     src="/logo.svg"
                                     alt="yazzi - ask.discover.empower"
