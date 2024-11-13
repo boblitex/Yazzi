@@ -1,0 +1,2 @@
+# Yazzi
+yazzi.dev
