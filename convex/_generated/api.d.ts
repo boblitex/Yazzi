@@ -13,6 +13,7 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as audio from "../audio.js";
 import type * as prompts from "../prompts.js";
 
 /**
@@ -24,6 +25,7 @@ import type * as prompts from "../prompts.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  audio: typeof audio;
   prompts: typeof prompts;
 }>;
 export declare const api: FilterApi<
