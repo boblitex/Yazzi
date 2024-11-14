@@ -26,6 +26,7 @@ const data = {
         {
           title: 'My Prompts',
           url: '#',
+          isActive: false,
         },
         {
           title: 'Project Structure',

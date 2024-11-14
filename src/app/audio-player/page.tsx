@@ -30,10 +30,15 @@ export default function AudioRecorder() {
               Accept: 'application/json',
             },
             body: JSON.stringify({
-              input_url: `${publicUrl}`,
+              input_url: publicUrl,
             }),
           }
         );
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error('Status:', response.status);
+          console.error('Error:', errorText);
+        }
         const data = await response.json();
         console.log('Response:', data);
       } catch (error) {
@@ -86,7 +91,7 @@ export default function AudioRecorder() {
   const uploadAudio = async (blob: Blob) => {
     try {
       // Generate a unique filename
-      const fileName = `audio-${Date.now()}.wav`;
+      const fileName = `audio-${Date.now()}.webm`;
 
       // Get the signed URL from Convex
       const uploadUrl = await generateUploadUrl({
