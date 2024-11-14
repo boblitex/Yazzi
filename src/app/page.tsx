@@ -1,5 +1,5 @@
 import { AppSidebar } from '@/components/app-sidebar';
-import Prompts from '@/components/prompts/prompts';
+import Prompts from '@/components/prompts';
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -32,13 +32,11 @@ export default function Page() {
                         <Breadcrumb>
                             <BreadcrumbList>
                                 <BreadcrumbItem className="hidden md:block">
-                                    <BreadcrumbLink href="#">
-                                        Getting Started
-                                    </BreadcrumbLink>
+                                    <BreadcrumbLink href="/">Prompts</BreadcrumbLink>
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator className="hidden md:block" />
                                 <BreadcrumbItem>
-                                    <BreadcrumbPage>Installation</BreadcrumbPage>
+                                    <BreadcrumbPage>Record</BreadcrumbPage>
                                 </BreadcrumbItem>
                             </BreadcrumbList>
                         </Breadcrumb>
@@ -46,7 +44,6 @@ export default function Page() {
                 </header>
                 <div className="flex flex-1 flex-col gap-4 p-4">
                     <Prompts />
-                    <div className="min-h-[50vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
                 </div>
             </SidebarInset>
         </SidebarProvider>
