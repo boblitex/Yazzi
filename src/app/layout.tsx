@@ -2,6 +2,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { ClerkProvider } from '@clerk/nextjs';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import { ConvexClientProvider } from './ConvexClientProvider';
 import './globals.css';
 
 const geistSans = localFont({
@@ -40,7 +41,7 @@ export default function RootLayout({
                         enableSystem
                         disableTransitionOnChange
                     >
-                        {children}
+                        <ConvexClientProvider>{children}</ConvexClientProvider>
                     </ThemeProvider>
                 </body>
             </html>
