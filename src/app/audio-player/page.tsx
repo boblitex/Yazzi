@@ -5,21 +5,40 @@ import { Button } from '@/components/ui/button';
 import { Mic, Square } from 'lucide-react';
 import { useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
-
-const getAudioUrl = (storageId: string) => {
-  return `${process.env.NEXT_PUBLIC_CONVEX_URL}/api/storage/${storageId}`;
-};
+import { log } from 'console';
 
 export default function AudioRecorder() {
   const [isRecording, setIsRecording] = useState(false);
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
+  const [publicUrl, setPublicUrl] = useState<string | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
 
-  console.log('audioBlob:', audioBlob);
-
   const generateUploadUrl = useMutation(api.audio.generateUploadUrl);
+  const storeFileId = useMutation(api.audio.storeFileId);
+
   const [isUploading, setIsUploading] = useState(false);
+
+  useEffect(() => {
+    if (publicUrl) {
+      const apiResponse = async () => {
+        const result = await fetch(
+          'https://plusnarrative-sp-sa-free-yazzi-ayhcgncmcpdvhdh6.southafricanorth-01.azurewebsites.net',
+          {
+            method: 'POST',
+            body: JSON.stringify({
+              input_url: publicUrl,
+            }),
+          }
+        );
+        console.log('response--->', result.json());
+      };
+
+      apiResponse();
+
+      console.log(apiResponse);
+    }
+  }, [publicUrl]);
 
   const handleUpload = async () => {
     if (!audioBlob) return;
@@ -64,6 +83,15 @@ export default function AudioRecorder() {
       const { storageId } = await result.json();
       console.log('File uploaded with storage ID:', storageId);
 
+      // Store the file ID in your database
+      const { publicUrl } = await storeFileId({
+        storageId,
+        fileName,
+      });
+
+      console.log('Public URL:', publicUrl);
+      setPublicUrl(publicUrl);
+
       console.log('Audio uploaded successfully');
       return result;
     } catch (error) {
@@ -71,8 +99,6 @@ export default function AudioRecorder() {
       throw error;
     }
   };
-
-  const auidoUrl = getAudioUrl('kg28j08vzak2hc6he4e261cpzh74jv18');
 
   const startRecording = async () => {
     try {
@@ -112,12 +138,25 @@ export default function AudioRecorder() {
       startRecording();
     }
   };
+  //    const { publicUrl } = await storeFileId({
+  //      storageId,
+  //      fileName,
+  //    });
 
-  useEffect(() => {
-    if (auidoUrl) {
-      console.log('Audio url:', auidoUrl);
-    }
-  }, [auidoUrl]);
+  //   useEffect(() => {
+  //     if (storageId) {
+  //       const fetchPublicUrl = async () => {
+  //         try {
+  //           const { publicUrl } = await generatePublicUrl({ storageId });
+  //           console.log('Public URL:', publicUrl);
+  //         } catch (error) {
+  //           console.error('Error generating public URL:', error);
+  //         }
+  //       };
+
+  //       fetchPublicUrl();
+  //     }
+  //   }, [storageId, generatePublicUrl]);
 
   return (
     <div className='flex flex-col items-center justify-center min-h-screen bg-gray-100'>

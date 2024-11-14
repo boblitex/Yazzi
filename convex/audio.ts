@@ -22,18 +22,18 @@ export const storeFileId = mutation({
     fileName: v.string(),
   },
   handler: async (ctx, args) => {
-    // Get the URL for the uploaded file using getDownloadUrl
-    const downloadUrl = await ctx.storage.getUrl(args.storageId);
+    // Generate a public URL for the file
+    const publicUrl = await ctx.storage.getUrl(args.storageId);
 
     // Store the file info in your database
-    const fileId = await ctx.db.insert('audioFiles', {
+    const fileId = await ctx.db.insert('audiofiles', {
       storageId: args.storageId,
       fileName: args.fileName,
-      url: downloadUrl,
+      publicUrl: publicUrl as string,
       uploadedAt: new Date().toISOString(),
     });
 
-    return { fileId, downloadUrl };
+    return { fileId, publicUrl };
   },
 });
 
