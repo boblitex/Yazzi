@@ -9,15 +9,12 @@ export async function getAudio(publicUrl: string) {
     });
 
     try {
-        const response = await fetch(
-            'https://plusnarrative-sp-sa-free-yazzi-ayhcgncmcpdvhdh6.southafricanorth-01.azurewebsites.net',
-            {
-                method: 'POST',
-                headers: myHeaders,
-                body: raw,
-                signal: AbortSignal.timeout(300000),
-            }
-        );
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL!, {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            signal: AbortSignal.timeout(300000),
+        });
 
         if (!response.ok) {
             const errorText = await response.text();

@@ -2,9 +2,10 @@
 
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useQuery } from 'convex/react';
-import { api } from '../../../convex/_generated/api';
-import AudioPlayer from '../audio-player';
-import AudioRecorder from '../audio-recorder';
+import Link from 'next/link';
+import { api } from '../../convex/_generated/api';
+import AudioPlayer from './audio-player';
+import AudioRecorder from './audio-recorder';
 
 type Prompt = {
     _id: string;
@@ -32,7 +33,7 @@ export default function Prompts() {
 
     return (
         <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <Card className="flex items-center justify-center bg-muted/50 hover:scale-95 transition-transform">
+            <Card className="flex items-center justify-center bg-muted/50 hover:scale-95 transition-transform min-h-[223px]">
                 <AudioRecorder />
             </Card>
             {prompts?.map(
@@ -41,11 +42,22 @@ export default function Prompts() {
                         <CardHeader>
                             {out_audio && (
                                 <AudioPlayer
-                                    source={`${process.env.NEXT_PUBLIC_CONVEX_URL}/api/storage/${out_audio}`}
+                                    source={
+                                        process.env.NEXT_PUBLIC_API_URL +
+                                        '/' +
+                                        out_audio
+                                    }
                                 />
                             )}
                             <CardTitle>{request}</CardTitle>
-                            <CardDescription>{source}</CardDescription>
+                            <CardDescription>
+                                <Link
+                                    target="_blank"
+                                    href={source}
+                                >
+                                    {source}
+                                </Link>
+                            </CardDescription>
                             <p>{response}</p>
                         </CardHeader>
                     </Card>

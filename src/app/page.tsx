@@ -1,5 +1,5 @@
 import { AppSidebar } from '@/components/app-sidebar';
-import Prompts from '@/components/prompts/prompts';
+import Prompts from '@/components/prompts';
 import {
     Breadcrumb,
     BreadcrumbItem,

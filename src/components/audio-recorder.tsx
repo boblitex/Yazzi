@@ -3,11 +3,13 @@
 import { Button } from '@/components/ui/button';
 import { useMutation } from 'convex/react';
 import { Mic, Square } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { api } from '../../convex/_generated/api';
 import { getAudio } from '../app/actions';
 
 export default function AudioRecorder() {
+    const create = useMutation(api.prompts.create);
+
     const [isRecording, setIsRecording] = useState(false);
     const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -18,38 +20,18 @@ export default function AudioRecorder() {
 
     const [isUploading, setIsUploading] = useState(false);
 
-    useEffect(() => {
-        // if (publicUrl) {
-        //   try {
-        //     const apiResponse = async () => {
-        //       const result = await fetch(
-        //         'https://plusnarrative-sp-sa-free-yazzi-ayhcgncmcpdvhdh6.southafricanorth-01.azurewebsites.net',
-        //         {
-        //           method: 'POST',
-        //           headers: {
-        //             'Content-Type': 'application/json',
-        //             Accept: 'application/json',
-        //           },
-        //           body: JSON.stringify({
-        //             input_url: publicUrl,
-        //           }),
-        //         }
-        //       );
-        //       const apiSpeech = await result.json();
-        //       console.log('response--->', apiSpeech);
-        //     };
-        //     apiResponse();
-        //   } catch (error) {
-        //     console.error('Error:', error);
-        //   }
-        // }
-    }, []);
-
     const postData = async (publicUrl: string) => {
         try {
             if (!publicUrl) return;
             const response = await getAudio(publicUrl);
-            alert(JSON.stringify(response));
+
+            await create({
+                request: response.transcription,
+                response: response.translation,
+                source: response.url,
+                in_audio: publicUrl,
+                out_audio: response.output_url,
+            });
         } catch (error) {
             console.error('Error:', error);
         }
