@@ -20,14 +20,20 @@ export async function getAudio(publicUrl: string) {
         );
 
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            const errorText = await response.text();
+            throw new Error(
+                `HTTP error! status: ${response.status}, message: ${errorText}`
+            );
         }
 
         const data = await response.json();
-
         return data;
     } catch (error) {
-        console.error('Error:', error);
-        return error;
+        console.error('Error in getAudio:', {
+            message: error instanceof Error ? error.message : 'Unknown error',
+            url: publicUrl,
+            timestamp: new Date().toISOString(),
+        });
+        throw error;
     }
 }
