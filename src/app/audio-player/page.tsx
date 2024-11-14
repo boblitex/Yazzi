@@ -19,31 +19,54 @@ export default function AudioRecorder() {
   const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
-    if (publicUrl) {
+    const postData = async () => {
       try {
-        const apiResponse = async () => {
-          const result = await fetch(
-            'https://plusnarrative-sp-sa-free-yazzi-ayhcgncmcpdvhdh6.southafricanorth-01.azurewebsites.net',
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-              },
-              body: JSON.stringify({
-                input_url: publicUrl,
-              }),
-            }
-          );
-          const apiSpeech = await result.json();
-          console.log('response--->', apiSpeech);
-        };
-
-        apiResponse();
+        const response = await fetch(
+          'https://plusnarrative-sp-sa-free-yazzi-ayhcgncmcpdvhdh6.southafricanorth-01.azurewebsites.net',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+            },
+            body: JSON.stringify({
+              input_url: `${publicUrl}`,
+            }),
+          }
+        );
+        const data = await response.json();
+        console.log('Response:', data);
       } catch (error) {
         console.error('Error:', error);
       }
-    }
+    };
+
+    postData();
+    // if (publicUrl) {
+    //   try {
+    //     const apiResponse = async () => {
+    //       const result = await fetch(
+    //         'https://plusnarrative-sp-sa-free-yazzi-ayhcgncmcpdvhdh6.southafricanorth-01.azurewebsites.net',
+    //         {
+    //           method: 'POST',
+    //           headers: {
+    //             'Content-Type': 'application/json',
+    //             Accept: 'application/json',
+    //           },
+    //           body: JSON.stringify({
+    //             input_url: publicUrl,
+    //           }),
+    //         }
+    //       );
+    //       const apiSpeech = await result.json();
+    //       console.log('response--->', apiSpeech);
+    //     };
+
+    //     apiResponse();
+    //   } catch (error) {
+    //     console.error('Error:', error);
+    //   }
+    // }
   }, [publicUrl]);
 
   const handleUpload = async () => {
