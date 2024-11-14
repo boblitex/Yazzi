@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Mic, Square } from 'lucide-react';
 import { useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
-import { log } from 'console';
 
 export default function AudioRecorder() {
   const [isRecording, setIsRecording] = useState(false);
@@ -21,22 +20,29 @@ export default function AudioRecorder() {
 
   useEffect(() => {
     if (publicUrl) {
-      const apiResponse = async () => {
-        const result = await fetch(
-          'https://plusnarrative-sp-sa-free-yazzi-ayhcgncmcpdvhdh6.southafricanorth-01.azurewebsites.net',
-          {
-            method: 'POST',
-            body: JSON.stringify({
-              input_url: publicUrl,
-            }),
-          }
-        );
-        console.log('response--->', result.json());
-      };
+      try {
+        const apiResponse = async () => {
+          const result = await fetch(
+            'https://plusnarrative-sp-sa-free-yazzi-ayhcgncmcpdvhdh6.southafricanorth-01.azurewebsites.net',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+              },
+              body: JSON.stringify({
+                input_url: publicUrl,
+              }),
+            }
+          );
+          const apiSpeech = await result.json();
+          console.log('response--->', apiSpeech);
+        };
 
-      apiResponse();
-
-      console.log(apiResponse);
+        apiResponse();
+      } catch (error) {
+        console.error('Error:', error);
+      }
     }
   }, [publicUrl]);
 
@@ -138,25 +144,6 @@ export default function AudioRecorder() {
       startRecording();
     }
   };
-  //    const { publicUrl } = await storeFileId({
-  //      storageId,
-  //      fileName,
-  //    });
-
-  //   useEffect(() => {
-  //     if (storageId) {
-  //       const fetchPublicUrl = async () => {
-  //         try {
-  //           const { publicUrl } = await generatePublicUrl({ storageId });
-  //           console.log('Public URL:', publicUrl);
-  //         } catch (error) {
-  //           console.error('Error generating public URL:', error);
-  //         }
-  //       };
-
-  //       fetchPublicUrl();
-  //     }
-  //   }, [storageId, generatePublicUrl]);
 
   return (
     <div className='flex flex-col items-center justify-center min-h-screen bg-gray-100'>
